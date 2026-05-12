@@ -31,6 +31,19 @@ export default defineConfig({
     },
   },
 
+
+  server: {
+    host: '0.0.0.0',
+    port: 4173,
+    allowedHosts: ['xen-tool-recommender.onrender.com'],
+  },
+
+  preview: {
+    host: '0.0.0.0',
+    port: Number(process.env.PORT) || 4173,
+    allowedHosts: ['xen-tool-recommender.onrender.com'],
+  },
+
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 })
