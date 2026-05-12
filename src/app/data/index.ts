@@ -10,8 +10,6 @@ export interface Tool {
   useCases: string[];
   figJamLink?: string;
   downloadLink?: string;
-  icon_svg?: string | null;
-  icon_link?: string | null;
 }
 
 export interface BlankOption {
