@@ -149,7 +149,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (recResult.error)
         throw new Error(`Recommendation logic fetch failed: ${recResult.error.message}`);
 
-      setTools((toolsResult.data as DBTool[]).map(mapTool));
+      const mappedTools = (toolsResult.data as DBTool[]).map(mapTool);
+      console.log('[DataContext] first tool payload', mappedTools[0]);
+      setTools(mappedTools);
       setFocusOptions(buildFocusOptions(recResult.data as DBRecLogic[]));
       setError(null);
       console.log('[DataContext] Loaded', toolsResult.data.length, 'tools and', recResult.data.length, 'recommendation rows.');
