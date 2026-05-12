@@ -26,6 +26,8 @@ interface DBTool {
   figjam_link: string | null;
   download_link: string | null;
   use_cases: string[] | null;
+  icon_svg: string | null;
+  icon_link: string | null;
 }
 
 interface DBRecLogic {
@@ -75,6 +77,8 @@ function mapTool(row: DBTool): Tool {
     figJamLink: row.figjam_link ?? undefined,
     downloadLink: row.download_link ?? undefined,
     useCases: row.use_cases ?? [],
+    icon_svg: row.icon_svg,
+    icon_link: row.icon_link,
     tags: {}, // legacy field, not stored in DB
   };
 }
@@ -145,7 +149,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (recResult.error)
         throw new Error(`Recommendation logic fetch failed: ${recResult.error.message}`);
 
-      setTools((toolsResult.data as DBTool[]).map(mapTool));
+      const mappedTools = (toolsResult.data as DBTool[]).map(mapTool);
+      console.log('[DataContext] first tool payload', mappedTools[0]);
+      setTools(mappedTools);
       setFocusOptions(buildFocusOptions(recResult.data as DBRecLogic[]));
       setError(null);
       console.log('[DataContext] Loaded', toolsResult.data.length, 'tools and', recResult.data.length, 'recommendation rows.');

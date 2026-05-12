@@ -2,32 +2,8 @@ import FrameRoseThorn from '../../imports/Frame-1/Frame-252-77';
 import { useState } from 'react';
 import { Tool } from '../data';
 import { useData } from '../contexts/DataContext';
-import {
-  Target,
-  BarChart2,
-  Layers,
-  GitBranch,
-  MessageCircle,
-  UserCircle,
-  LayoutGrid,
-  RefreshCw,
-  Users,
-  Lightbulb,
-  Map,
-  ListOrdered,
-  TrendingUp,
-  FlaskConical,
-  ExternalLink,
-  Clock,
-  Users2,
-  Briefcase,
-  Grid2x2,
-  Sparkles,
-  Hexagon,
-  Presentation,
-  Vote,
-  Maximize2,
-} from 'lucide-react';
+import { ExternalLink, Clock, Users2 } from 'lucide-react';
+import { DynamicIcon } from './DynamicIcon';
 
 // Wrapper that makes the Figma Frame SVG behave like a Lucide icon
 function RoseThornBudIcon({
@@ -97,30 +73,6 @@ const SHORT_DESCRIPTIONS: Record<string, string> = {
   'dot-voting':                 'Rapidly align your team on the most promising ideas by distributing votes democratically.',
 };
 
-const TOOL_ICONS: Record<string, React.ElementType> = {
-  'golden-circles':             Target,
-  'competitor-matrix':          BarChart2,
-  'value-proposition-canvas':   Layers,
-  'ishikawa':                   GitBranch,
-  'how-might-we':               MessageCircle,
-  'persona':                    UserCircle,
-  'card-sorting':               LayoutGrid,
-  'inversion':                  RefreshCw,
-  'roleplaying':                Users,
-  'six-thinking-hats':          Lightbulb,
-  'customer-journey-map':       Map,
-  'rice-prioritization':        ListOrdered,
-  'impact-effort':              TrendingUp,
-  'ab-testing':                 FlaskConical,
-  'jobs-to-be-done':            Briefcase,
-  'extremes-and-mainstreams':   Maximize2,
-  'swot':                       Grid2x2,
-  'create-insight-statements':  Sparkles,
-  'ux-honeycomb-scorecard':     Hexagon,
-  'rose-thorn-bud':             RoseThornBudIcon,
-  'nabc':                       Presentation,
-  'dot-voting':                 Vote,
-};
 
 function darkenColor(hex: string): string {
   const map: Record<string, string> = {
@@ -283,7 +235,6 @@ function ToolCard({ tool }: { tool: Tool }) {
   const [hovered, setHovered] = useState(false);
   const [btnHovered, setBtnHovered] = useState(false);
 
-  const IconComponent = TOOL_ICONS[tool.id] ?? Lightbulb;
   const darkColor = darkenColor(tool.categoryColor);
   const gradientBg = `linear-gradient(145deg, ${darkColor} 0%, ${tool.categoryColor} 100%)`;
   const shortDesc = SHORT_DESCRIPTIONS[tool.id] ?? tool.description;
@@ -350,12 +301,11 @@ function ToolCard({ tool }: { tool: Tool }) {
         gap: 10,
         marginBottom: 18,
       }}>
-        <IconComponent
-          size={44}
-          color="rgba(255,255,255,0.82)"
-          strokeWidth={1.6}
-          style={{ padding: '4px' }}
-        />
+        {tool.icon_svg
+          ? <DynamicIcon name={tool.icon_svg} size={44} strokeWidth={1.6} color="rgba(255,255,255,0.82)" style={{ padding: '4px' }} />
+          : tool.id === 'rose-thorn-bud'
+          ? <RoseThornBudIcon />
+          : null}
 
         <span style={{
           color: '#ffffff',
