@@ -1,0 +1,114 @@
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blankPop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.18); }
+  65%  { transform: scale(0.93); }
+  100% { transform: scale(1); }
+}
+
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Expand: card content fades + slides in — no scale/vertical change to avoid height jump */
+@keyframes cardExpand {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes completePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(189,76,70,0.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(189,76,70,0); }
+  100% { box-shadow: 0 0 0 0 rgba(189,76,70,0); }
+}
+
+/* Sentence line: allow natural wrapping for 3-blank sentence.
+   Chips are individually nowrap; the sentence wraps between static parts. */
+.sentence-line {
+  white-space: normal;
+}
+
+@media (max-width: 480px) {
+  .sentence-line {
+    white-space: normal;
+  }
+}
+
+/* ─── Intro page responsive layout ─────────────────────────────────────────── */
+.intro-outer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+}
+
+.intro-row {
+  flex: 1;
+  display: flex;
+  min-height: 100vh;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.intro-left {
+  flex: 0 0 52%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;     /* mirrors right-side centering exactly */
+  padding: 36px 48px 48px 28px;
+}
+
+/* Content block: same height as right-side content
+   (quote ~100px + 40px gap + cards 300px = 440px)
+   space-between pins tag/title/subtext to top and CTA to bottom */
+.intro-content-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 440px;
+}
+
+.intro-right {
+  flex: 0 0 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 32px 48px;
+  overflow: hidden;
+}
+
+@media (max-width: 800px) {
+  .intro-row {
+    flex-direction: column;
+    min-height: unset;
+  }
+  .intro-left {
+    flex: unset;
+    justify-content: flex-start;   /* reset to normal flow on mobile */
+    padding: 28px 24px 36px;
+  }
+  .intro-content-block {
+    height: auto;                  /* no fixed height on mobile */
+    gap: 24px;
+  }
+  .intro-right {
+    flex: unset;
+    padding: 32px 24px 48px;
+  }
+}
+
+/* ─── Wizard responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .sentence-line {
+    font-size: 0.9rem !important;
+  }
+}
