@@ -10,6 +10,7 @@ export interface Tool {
   useCases: string[];
   figJamLink?: string;
   downloadLink?: string;
+  iconClass?: string;
 }
 
 export interface BlankOption {

@@ -26,6 +26,7 @@ interface DBTool {
   figjam_link: string | null;
   download_link: string | null;
   use_cases: string[] | null;
+  icon_class: string | null;
 }
 
 interface DBRecLogic {
@@ -75,6 +76,7 @@ function mapTool(row: DBTool): Tool {
     figJamLink: row.figjam_link ?? undefined,
     downloadLink: row.download_link ?? undefined,
     useCases: row.use_cases ?? [],
+    iconClass: row.icon_class ?? undefined,
     tags: {}, // legacy field, not stored in DB
   };
 }
