@@ -1,4 +1,3 @@
-import FrameRoseThorn from '../../imports/Frame-1/Frame-252-77';
 import { useState } from 'react';
 import { Tool } from '../data';
 import { useData } from '../contexts/DataContext';
@@ -27,33 +26,8 @@ import {
   Presentation,
   Vote,
   Maximize2,
+  Flower,
 } from 'lucide-react';
-
-// Wrapper that makes the Figma Frame SVG behave like a Lucide icon
-function RoseThornBudIcon({
-  size = 44,
-  color = 'rgba(255,255,255,0.82)',
-  style,
-}: {
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        flexShrink: 0,
-        '--stroke-0': color,
-        ...style,
-      } as React.CSSProperties}
-    >
-      <FrameRoseThorn />
-    </div>
-  );
-}
 
 const FOCUS_FILTERS = [
   { id: 'all', label: 'All', color: '#ffffff' },
@@ -117,7 +91,7 @@ const TOOL_ICONS: Record<string, React.ElementType> = {
   'swot':                       Grid2x2,
   'create-insight-statements':  Sparkles,
   'ux-honeycomb-scorecard':     Hexagon,
-  'rose-thorn-bud':             RoseThornBudIcon,
+  'rose-thorn-bud':             Flower,
   'nabc':                       Presentation,
   'dot-voting':                 Vote,
 };
