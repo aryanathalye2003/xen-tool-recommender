@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Tool } from '../data';
 import { useData } from '../contexts/DataContext';
 import {
@@ -28,6 +28,31 @@ import {
   Maximize2,
   Flower,
 } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+
+
+function iconClassToComponentName(iconClass: string): string {
+  const cleaned = iconClass
+    .replace(/^lucide\s+/i, '')
+    .replace(/^lucide-/i, '')
+    .trim();
+
+  return cleaned
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+}
+
+function resolveToolIcon(tool: Tool): React.ElementType {
+  if (tool.iconClass) {
+    const componentName = iconClassToComponentName(tool.iconClass);
+    const dynamicIcon = (LucideIcons as Record<string, React.ElementType>)[componentName];
+    if (dynamicIcon) return dynamicIcon;
+  }
+
+  return TOOL_ICONS[tool.id] ?? Lightbulb;
+}
 
 const FOCUS_FILTERS = [
   { id: 'all', label: 'All', color: '#ffffff' },
@@ -257,7 +282,7 @@ function ToolCard({ tool }: { tool: Tool }) {
   const [hovered, setHovered] = useState(false);
   const [btnHovered, setBtnHovered] = useState(false);
 
-  const IconComponent = TOOL_ICONS[tool.id] ?? Lightbulb;
+  const IconComponent = useMemo(() => resolveToolIcon(tool), [tool]);
   const darkColor = darkenColor(tool.categoryColor);
   const gradientBg = `linear-gradient(145deg, ${darkColor} 0%, ${tool.categoryColor} 100%)`;
   const shortDesc = SHORT_DESCRIPTIONS[tool.id] ?? tool.description;
