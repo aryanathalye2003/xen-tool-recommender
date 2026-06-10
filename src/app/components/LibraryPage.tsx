@@ -54,15 +54,22 @@ function resolveToolIcon(tool: Tool): React.ElementType {
   return TOOL_ICONS[tool.id] ?? Lightbulb;
 }
 
-const FOCUS_FILTER_COLORS: Record<string, string> = {
-  'learn-about-people': '#2041CE',
-  'know-the-business': '#5D3ABF',
-  'understand-the-problem': '#2041CE',
-  'explore-solutions': '#5D3ABF',
-  'validate-concepts': '#BD4C46',
-};
+const FOCUS_FILTERS = [
+  { id: 'all', label: 'All', color: '#ffffff' },
+  { id: 'learn-about-people', label: 'learn about people', color: '#2041CE' },
+  { id: 'know-the-business', label: 'know the business', color: '#5D3ABF' },
+  { id: 'understand-the-problem', label: 'understand the problem', color: '#2041CE' },
+  { id: 'explore-solutions', label: 'explore solutions', color: '#5D3ABF' },
+  { id: 'validate-concepts', label: 'validate concepts', color: '#BD4C46' },
+];
 
-const DEFAULT_FOCUS_FILTER_COLOR = '#2041CE';
+const FOCUS_TOOL_MAPPING: Record<string, string[]> = {
+  'learn-about-people': ['persona', 'roleplaying', 'extremes-and-mainstreams', 'customer-journey-map', 'jobs-to-be-done'],
+  'know-the-business': ['golden-circles', 'value-proposition-canvas', 'competitor-matrix', 'swot'],
+  'understand-the-problem': ['ishikawa', 'customer-journey-map', 'roleplaying', 'how-might-we', 'create-insight-statements', 'value-proposition-canvas', 'persona', 'ux-honeycomb-scorecard'],
+  'explore-solutions': ['how-might-we', 'inversion', 'roleplaying', 'six-thinking-hats', 'card-sorting', 'nabc', 'rose-thorn-bud'],
+  'validate-concepts': ['rice-prioritization', 'impact-effort', 'dot-voting', 'six-thinking-hats', 'golden-circles', 'ab-testing', 'roleplaying'],
+};
 
 const SHORT_DESCRIPTIONS: Record<string, string> = {
   'golden-circles':             'Align your team around a shared Why, How, and What to build a compelling purpose.',
@@ -124,37 +131,12 @@ function darkenColor(hex: string): string {
 }
 
 export function LibraryPage() {
-  const { tools, focusOptions, isLoading } = useData();
+  const { tools, isLoading } = useData();
   const [selectedFocus, setSelectedFocus] = useState('all');
-
-  const focusFilters = useMemo(() => [
-    { id: 'all', label: 'All', color: '#ffffff' },
-    ...focusOptions.map((focus) => ({
-      id: focus.value,
-      label: focus.label,
-      color: FOCUS_FILTER_COLORS[focus.value] ?? DEFAULT_FOCUS_FILTER_COLOR,
-    })),
-  ], [focusOptions]);
-
-  const toolIdsByFocus = useMemo(() => {
-    const mapping = new Map<string, Set<string>>();
-
-    focusOptions.forEach((focus) => {
-      const toolIds = new Set<string>();
-
-      focus.outcomes.forEach((outcome) => {
-        outcome.recommendations.forEach((toolId) => toolIds.add(toolId));
-      });
-
-      mapping.set(focus.value, toolIds);
-    });
-
-    return mapping;
-  }, [focusOptions]);
 
   const filteredTools = selectedFocus === 'all'
     ? tools
-    : tools.filter((tool) => toolIdsByFocus.get(selectedFocus)?.has(tool.id));
+    : tools.filter(tool => FOCUS_TOOL_MAPPING[selectedFocus]?.includes(tool.id));
 
   if (isLoading) {
     return (
@@ -205,7 +187,7 @@ export function LibraryPage() {
         marginBottom: 48,
         padding: '0 20px',
       }}>
-        {focusFilters.map(focus => (
+        {FOCUS_FILTERS.map(focus => (
           <FocusFilterTab
             key={focus.id}
             focus={focus}
